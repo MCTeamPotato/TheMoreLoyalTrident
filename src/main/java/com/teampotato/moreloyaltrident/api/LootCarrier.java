@@ -4,7 +4,7 @@ import net.minecraft.world.entity.Entity;
 
 import java.util.Set;
 
-public interface ItemCarrier {
+public interface LootCarrier {
     void moreLoyalTrident$carryLoot(Entity lootEntity);
     Set<Entity> moreLoyalTrident$getCarriedLoots();
 }

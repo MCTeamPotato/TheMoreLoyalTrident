@@ -1,6 +1,7 @@
 package com.teampotato.moreloyaltrident.mixin;
 
-import com.teampotato.moreloyaltrident.api.ItemCarrier;
+import com.teampotato.moreloyaltrident.TheMoreLoyalTrident;
+import com.teampotato.moreloyaltrident.api.LootCarrier;
 import com.teampotato.moreloyaltrident.api.LoyalChecker;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -22,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Set;
 
 @Mixin(ThrownTrident.class)
-public abstract class ThrownTridentMixin extends AbstractArrow implements LoyalChecker, ItemCarrier {
+public abstract class ThrownTridentMixin extends AbstractArrow implements LoyalChecker, LootCarrier {
     @Shadow @Final private static EntityDataAccessor<Byte> ID_LOYALTY;
 
     @Unique private final ObjectSet<Entity> moreLoyalTrident$carriedItems = new ObjectOpenHashSet<>();
@@ -33,8 +34,8 @@ public abstract class ThrownTridentMixin extends AbstractArrow implements LoyalC
     }
 
     @Override
-    public boolean moreLoyalTrident$isLoyal() {
-        return this.entityData.get(ID_LOYALTY) > 0;
+    public boolean moreLoyalTrident$canCatchLoot() {
+        return this.entityData.get(ID_LOYALTY) >= TheMoreLoyalTrident.LEVEL.get().byteValue();
     }
 
     @Override
