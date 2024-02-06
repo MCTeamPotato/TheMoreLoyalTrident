@@ -55,8 +55,8 @@ public abstract class ThrownTridentMixin extends AbstractArrow implements LoyalC
     @Inject(method = "playerTouch", at = @At("TAIL"))
     private void moreLoyalTrident$carryItems(Player player, CallbackInfo ci) {
         if (!(this.level instanceof ServerLevel)) return;
-        this.moreLoyalTrident$getCarriedLoots().forEach(itemEntity -> {
-            Entity lootEntity = ((ServerLevel) this.level).getEntity(itemEntity);
+        this.moreLoyalTrident$getCarriedLoots().forEach(loot -> {
+            Entity lootEntity = ((ServerLevel) this.level).getEntity(loot);
             if (lootEntity != null) lootEntity.teleportTo(this.getX(), this.getY(), this.getZ());
         });
         this.moreLoyalTrident$getCarriedLoots().clear();

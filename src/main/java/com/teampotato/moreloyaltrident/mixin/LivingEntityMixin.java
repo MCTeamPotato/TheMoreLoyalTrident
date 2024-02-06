@@ -30,9 +30,9 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "dropAllDeathLoot", at = @At("HEAD"))
     private void moreLoyalTrident$checkTrident(DamageSource damageSource, CallbackInfo ci) {
         if (!(this.level instanceof ServerLevel)) return;
-        UUID entityUUID = moreLoyalTrident$getDeathTrident(damageSource.getDirectEntity());
-        if (entityUUID == null) entityUUID = moreLoyalTrident$getDeathTrident(damageSource.getEntity());
-        this.moreLoyalTrident$tridentOnDeath.set(entityUUID);
+        UUID deathTrident = moreLoyalTrident$getDeathTrident(damageSource.getDirectEntity());
+        if (deathTrident == null) deathTrident = moreLoyalTrident$getDeathTrident(damageSource.getEntity());
+        this.moreLoyalTrident$tridentOnDeath.set(deathTrident);
     }
 
     @Inject(method = "dropAllDeathLoot", at = @At("RETURN"))

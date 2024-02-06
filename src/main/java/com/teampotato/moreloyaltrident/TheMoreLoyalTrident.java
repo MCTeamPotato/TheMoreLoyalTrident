@@ -10,7 +10,7 @@ public class TheMoreLoyalTrident {
     public static final String MOD_ID = "moreloyaltrident";
 
     private static final ForgeConfigSpec CONFIG;
-    public static final ForgeConfigSpec.IntValue X,Y,Z, LEVEL;
+    public static final ForgeConfigSpec.IntValue X, Y, Z, LEVEL;
 
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
