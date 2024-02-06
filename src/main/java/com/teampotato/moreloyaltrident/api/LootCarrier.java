@@ -1,10 +1,9 @@
 package com.teampotato.moreloyaltrident.api;
 
-import net.minecraft.world.entity.Entity;
-
 import java.util.Set;
+import java.util.UUID;
 
 public interface LootCarrier {
-    void moreLoyalTrident$carryLoot(Entity lootEntity);
-    Set<Entity> moreLoyalTrident$getCarriedLoots();
+    void moreLoyalTrident$carryLoot(UUID loot);
+    Set<UUID> moreLoyalTrident$getCarriedLoots();
 }
