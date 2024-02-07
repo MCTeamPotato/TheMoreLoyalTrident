@@ -3,8 +3,7 @@ package com.teampotato.moreloyaltrident.mixin;
 import com.teampotato.moreloyaltrident.TheMoreLoyalTrident;
 import com.teampotato.moreloyaltrident.api.LootCarrier;
 import com.teampotato.moreloyaltrident.api.LoyalChecker;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
+import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -30,7 +29,7 @@ import java.util.UUID;
 public abstract class ThrownTridentMixin extends AbstractArrow implements LoyalChecker, LootCarrier {
     @Shadow @Final private static EntityDataAccessor<Byte> ID_LOYALTY;
 
-    @Unique private @Nullable ObjectSet<UUID> moreLoyalTrident$carriedItems = null;
+    @Unique private @Nullable Set<UUID> moreLoyalTrident$carriedItems = null;
 
     protected ThrownTridentMixin(EntityType<? extends AbstractArrow> arg, Level arg2) {
         super(arg, arg2);
@@ -43,13 +42,18 @@ public abstract class ThrownTridentMixin extends AbstractArrow implements LoyalC
 
     @Override
     public void moreLoyalTrident$carryLoot(UUID loot) {
-        if (this.moreLoyalTrident$carriedItems == null) this.moreLoyalTrident$carriedItems = new ObjectOpenHashSet<>();
+        if (this.moreLoyalTrident$carriedItems == null) this.moreLoyalTrident$carriedItems = new ConcurrentSet<>();
         this.moreLoyalTrident$carriedItems.add(loot);
     }
 
     @Override
     public Set<UUID> moreLoyalTrident$getCarriedLoots() {
         return this.moreLoyalTrident$carriedItems == null ? Collections.emptySet() : this.moreLoyalTrident$carriedItems;
+    }
+
+    @Override
+    public void moreLoyalTrident$clearData() {
+        this.moreLoyalTrident$carriedItems = null;
     }
 
     @Inject(method = "playerTouch", at = @At("TAIL"))
@@ -59,6 +63,6 @@ public abstract class ThrownTridentMixin extends AbstractArrow implements LoyalC
             Entity lootEntity = ((ServerLevel) this.level).getEntity(loot);
             if (lootEntity != null) lootEntity.teleportTo(this.getX(), this.getY(), this.getZ());
         });
-        this.moreLoyalTrident$getCarriedLoots().clear();
+        this.moreLoyalTrident$clearData();
     }
 }
